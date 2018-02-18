@@ -1,0 +1,74 @@
+---
+- name: Obtaining ProxySQL repo key
+  apt_key: url=http://repo.proxysql.com/ProxySQL/repo_pub_key
+          state=present
+
+- name: Adding ProxySQL repository
+  apt_repository:
+    repo: 'deb http://repo.proxysql.com/ProxySQL/proxysql-1.4.x/{{ ansible_distribution_release }}/ ./'
+    state: present
+    filename: proxysql
+
+- name: Install ProxySQL
+  apt:
+    name: proxysql={{ proxysql_version }}
+    state: present
+    allow_unauthenticated: y
+
+- name: Start ProxySQL SQLite server
+  command: >
+    proxysql --sqlite3-server
+
+- name: Installs mysql-client
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - mysql-client
+  become: yes
+
+- name: Configures ProxySQL
+  become: yes
+  template:
+    src: proxysql.cnf.j2
+    dest: /etc/proxysql.cnf
+    mode: 0644
+    backup: yes
+
+- name: Ensure ProxySQL is running
+  service:
+    name: "{{item}}"
+    state: started
+    enabled: yes
+  with_items:
+    - proxysql
+
+- name: Load ProxySQL users from config
+  command: >
+    mysql --user={{proxysql_admin_user}} --password={{proxysql_admin_password}}
+    -h{{proxysql_admin_interface}} -P{{proxysql_admin_port}}
+    --execute="LOAD MYSQL USERS FROM CONFIG;LOAD MYSQL USERS FROM MEMORY;LOAD MYSQL USERS TO RUNTIME;SAVE MYSQL USERS FROM RUNTIME;SAVE MYSQL USERS TO DISK;"
+
+- name: Load ProxySQL MySQL variables from config
+  command: >
+    mysql --user={{proxysql_admin_user}} --password={{proxysql_admin_password}}
+    -h{{proxysql_admin_interface}} -P{{proxysql_admin_port}}
+    --execute="LOAD MYSQL VARIABLES FROM CONFIG;LOAD MYSQL VARIABLES FROM MEMORY;"
+
+- name: Load ProxySQL servers from config
+  command: >
+    mysql --user={{proxysql_admin_user}} --password={{proxysql_admin_password}}
+    -h{{proxysql_admin_interface}} -P{{proxysql_admin_port}}
+    --execute="LOAD MYSQL SERVERS FROM CONFIG;LOAD MYSQL SERVERS FROM MEMORY;"
+
+- name: Load ProxySQL query rules from config
+  command: >
+    mysql --user={{proxysql_admin_user}} --password={{proxysql_admin_password}}
+    -h{{proxysql_admin_interface}} -P{{proxysql_admin_port}}
+    --execute="LOAD MYSQL QUERY RULES FROM CONFIG;LOAD MYSQL QUERY RULES FROM MEMORY;"
+
+- name: Load admin variables from config
+  command: >
+    mysql --user={{proxysql_admin_user}} --password={{proxysql_admin_password}}
+    -h{{proxysql_admin_interface}} -P{{proxysql_admin_port}}
+    --execute="LOAD ADMIN VARIABLES FROM CONFIG;LOAD ADMIN VARIABLES FROM MEMORY;"

@@ -1,0 +1,41 @@
+galaxy_info:
+  author: Kenan Fallon
+  description: An Ansible role for installing ProxySQL
+  issue_tracker_url: https://github.com/kenanfallon/ansible-role-proxysql/issues
+  license: license (BSD, MIT)
+  min_ansible_version: 2.2
+
+  platforms:
+  #- name: Fedora
+  #  versions:
+  #  - all
+  #  - 16
+  #  - 17
+  #  - 18
+  #  - 19
+  #  - 20
+  #  - 21
+  #  - 22
+  #  - 23
+  #  - 24
+  #  - 25
+  #  - 26
+  #  - 27
+  - name: Ubuntu
+    versions:
+    - trusty
+    - xenial
+  #- name: Debian
+  #  versions:
+  #  - all
+  #  - buster
+  #  - etch
+  #  - jessie
+  #  - lenny
+  #  - sid
+  #  - squeeze
+  #  - stretch
+  #  - wheezy
+
+  galaxy_tags:
+    - proxySQL
