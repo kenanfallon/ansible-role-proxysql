@@ -18,6 +18,7 @@
 - name: Start ProxySQL SQLite server
   command: >
     proxysql --sqlite3-server
+  become: yes
 
 - name: Installs mysql-client
   apt:
@@ -65,7 +66,7 @@
   command: >
     mysql --user={{proxysql_admin_user}} --password={{proxysql_admin_password}}
     -h{{proxysql_admin_interface}} -P{{proxysql_admin_port}}
-    --execute="LOAD MYSQL QUERY RULES FROM CONFIG;LOAD MYSQL QUERY RULES FROM MEMORY;"
+    --execute="LOAD MYSQL QUERY RULES FROM CONFIG;LOAD MYSQL QUERY RULES FROM MEMORY;LOAD MYSQL QUERY RULES TO RUNTIME"
 
 - name: Load admin variables from config
   command: >

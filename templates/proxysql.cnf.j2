@@ -52,7 +52,7 @@ mysql_variables=
 
 # Defines all the MySQL servers
 
-mysql_servers =
+mysql_servers=
 (
 {% for srv in proxysql_mysql_servers %}
   {
@@ -65,31 +65,45 @@ mysql_servers =
 
 # defines all the MySQL users
 
-mysql_users:
+mysql_users=
 (
 {% for usr in proxysql_mysql_users %}
   {
     username="{{ usr.username }}",
     password="{{ usr.password }}",
-    default_hostgroup="{{ usr.default_hostgroup | default(1) }}",
-    active="{{ usr.active | default(1) }}"
+    default_hostgroup={{ usr.default_hostgroup | default(1) }},
+    active={{ usr.active | default(1) }}
   }{% if not loop.last %},{% endif %}
 {% endfor %}
 )
 
 #defines MySQL Query Rules
 
-mysql_query_rules:
+mysql_query_rules=
 (
 {% for rule in proxysql_mysql_query_rules %}
   {
-    rule_id={{ loop.index }}
-    match_pattern="{{ rule.match_pattern }}",
-    destination_hostgroup={{ rule.destination_hostgroup | default(0) }}
+    rule_id={{ loop.index }},
+    match_digest="{{ rule.match_digest | default()}}",
+    match_pattern="{{ rule.match_pattern | default()}}",
+    username="{{ rule.username | default()}}",
+    destination_hostgroup={{ rule.destination_hostgroup | default(1) }}
+    active={{ rule.active | default(1) }}
+    apply={{ rule.apply | default(0) }}
   }
-{%   if not loop.last %},
+{% if not loop.last %},{% endif %}
+{% endfor %}
+)
 
-{%   endif %}
+mysql_replication_hostgroups=
+(
+{% for host in proxysql_mysql_replication_hostgroups %}
+  {
+    writer_hostgroup={{ host.writer_hostgroup }},
+    reader_hostgroup={{ host.reader_hostgroup }},
+    comment="{{ host.comment }}"
+  }
+{% if not loop.last %},{%   endif %}
 {% endfor %}
 )
 
@@ -106,21 +120,6 @@ scheduler=
 #    arg4="1"
 #    arg5="/var/lib/proxysql/proxysql_galera_checker.log"
 #  }
-)
-
-
-mysql_replication_hostgroups=
-(
-#        {
-#                writer_hostgroup=30
-#                reader_hostgroup=40
-#                comment="test repl 1"
-#       },
-#       {
-#                writer_hostgroup=50
-#                reader_hostgroup=60
-#                comment="test repl 2"
-#        }
 )
 
 # http://www.hyperrealm.com/libconfig/libconfig_manual.html#Configuration-File-Grammar

@@ -1,6 +1,8 @@
 Ansible Role: ProxySQL
 =========
 
+[![Build Status](https://travis-ci.org/kenanfallon/ansible-role-proxysql.svg?branch=master)](https://travis-ci.org/kenanfallon/ansible-role-proxysql)
+
 Installs & configures ProxySQL on Debian/Ubuntu servers
 
 Requirements
@@ -18,7 +20,7 @@ proxysql_admin_password: admin
 proxysql_admin_interface: 0.0.0.0
 proxysql_admin_port: 6032
 
-# Proxy SQL Users
+# ProxySQL Users
 proxysql_mysql_users:
    - username: username
      password: password
@@ -29,17 +31,28 @@ proxysql_mysql_users:
      default-hostgroup: 2 #default 1
      active: 1 #default 1
 
-#Proxy SQL Servers
+# ProxySQL Servers
 proxysql_mysql_servers:
    - address: 127.0.0.1
      port: 3306
      hostgroup: 1 # default 1 
-      
+
+# ProxySQL Replication Hostgroups
+proxysql_mysql_replication_hostgroups:
+  - writer_hostgroup: 1
+    reader_hostgroup: 2
+    comment: default
+     
+# ProxySQL Query Rules        
 proxysql_mysql_query_rules:
-   - match_pattern: "^SELECT .* FOR UPDATE$"
-     destination_hostgroup: 1
+    - match_digest: '^SELECT (.*) FOR UPDATE$'
+      destination_hostgroup: 2
+      username: username
+      apply: 1
    - match_pattern: "^SELECT"
-     destination_hostgroup: 2  
+     destination_hostgroup: 2 
+     username: username
+     apply: 1 
 ```
 
 For all available variables, take a look at defaults/main.yml
