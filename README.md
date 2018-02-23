@@ -53,7 +53,11 @@ proxysql_mysql_query_rules:
    - match_pattern: "^SELECT"
      destination_hostgroup: 2 
      username: username
-     apply: 1 
+     apply: 1
+   - digest: '0x2XXXXXXXXXXXXXXX'
+     destination_hostgroup: 2
+     username: username
+     apply: 1   
 ```
 
 For all available variables, take a look at defaults/main.yml

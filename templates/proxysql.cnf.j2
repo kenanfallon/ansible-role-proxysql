@@ -84,6 +84,7 @@ mysql_query_rules=
 {% for rule in proxysql_mysql_query_rules %}
   {
     rule_id={{ loop.index }},
+    digest="{{ rule.digest | default()}}",
     match_digest="{{ rule.match_digest | default()}}",
     match_pattern="{{ rule.match_pattern | default()}}",
     username="{{ rule.username | default()}}",
