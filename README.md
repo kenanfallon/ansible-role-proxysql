@@ -67,6 +67,20 @@ Dependencies
 
 None.
 
+Example Playbook
+------------
+
+    - hosts: localhost
+      vars:
+        proxysql_admin_user: admin
+        proxysql_admin_password: admin
+        proxysql_mysql_servers:
+            - address: 127.0.0.1
+              port: 3306
+              hostgroup: 1
+      roles:
+        - kenanfallon.proxysql
+
 License
 -------
 
