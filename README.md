@@ -4,7 +4,7 @@ Ansible Role: ProxySQL
 [![Build Status](https://travis-ci.org/kenanfallon/ansible-role-proxysql.svg?branch=master)](https://travis-ci.org/kenanfallon/ansible-role-proxysql)
 [![Ansible Galaxy](https://img.shields.io/ansible/role/23915.svg)](https://galaxy.ansible.com/kenanfallon/proxysql/)
 
-Installs & configures ProxySQL on Debian/Ubuntu servers
+Installs & configures ProxySQL on Ubuntu servers
 
 Requirements
 ------------
