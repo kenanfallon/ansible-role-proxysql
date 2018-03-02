@@ -37,6 +37,10 @@ proxysql_mysql_servers:
    - address: 127.0.0.1
      port: 3306
      hostgroup: 1 # default 1 
+   - address: 127.0.0.1
+     port: 3307
+     hostgroup: 2 # default 1 
+     status: OFFLINE_SOFT #default ONLINE
 
 # ProxySQL Replication Hostgroups
 proxysql_mysql_replication_hostgroups:

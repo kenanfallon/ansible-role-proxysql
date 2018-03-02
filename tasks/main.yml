@@ -54,7 +54,7 @@
   command: >
     mysql --user={{proxysql_admin_user}} --password={{proxysql_admin_password}}
     -h{{proxysql_admin_interface}} -P{{proxysql_admin_port}}
-    --execute="LOAD MYSQL SERVERS FROM CONFIG;LOAD MYSQL SERVERS FROM MEMORY;"
+    --execute="LOAD MYSQL SERVERS FROM CONFIG;LOAD MYSQL SERVERS FROM MEMORY;LOAD MYSQL SERVERS TO RUNTIME;"
 
 - name: Load ProxySQL query rules from config
   command: >

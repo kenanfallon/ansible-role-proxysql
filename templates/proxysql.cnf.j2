@@ -58,7 +58,8 @@ mysql_servers=
   {
     address="{{ srv.address }}",
     port={{ srv.port }},
-    hostgroup={{ srv.hostgroup }}
+    hostgroup={{ srv.hostgroup }},
+    status="{{ srv.status | default("ONLINE") }}"
   }{% if not loop.last %},{% endif %}
 {% endfor %}
 )
